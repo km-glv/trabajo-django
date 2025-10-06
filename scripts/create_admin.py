@@ -27,3 +27,8 @@ else:
     user.save()
     print(f"Superuser '{username}' updated (password reset).")
 print('DONE')
+
+"python manage.py createsuperuser"
+"python manage.py loaddata"
+"python manage.py cargar_datos"
+"pip install -r requirements.txt"
