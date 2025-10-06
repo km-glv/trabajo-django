@@ -1,0 +1,7 @@
+Django==5.2.5
+mysqlclient>=2.1.0
+# If installing mysqlclient fails on Windows you can use PyMySQL instead (pure-Python):
+# PyMySQL==1.1.0
+
+# Optional developer/test deps:
+# pytest
