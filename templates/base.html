@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Centro de Psicología{% endblock %}</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <header>
+        <h1>{% block page_title %}Centro de Psicología{% endblock %}</h1>
+        <nav class="topnav" aria-label="Navegación principal">
+            <a class="nav-link" href="{% url 'home' %}">Inicio</a>
+            <a class="nav-link" href="{% url 'admin:index' %}">Admin</a>
+            {% if user.is_authenticated %}
+                <a class="nav-link" href="{% url 'reservar' %}">Reservar cita</a>
+                <a class="nav-link" href="{% url 'mis_reservas' %}">Mis reservas</a>
+                {% if user.is_staff %}
+                    <a class="nav-link" href="{% url 'profesionales' %}">Panel Profesional</a>
+                {% endif %}
+                <a class="nav-link" href="{% url 'logout' %}">Cerrar sesión ({{ user.username }})</a>
+            {% else %}
+                <a class="nav-link" href="{% url 'login' %}">Iniciar sesión</a>
+                <a class="nav-link" href="{% url 'register' %}">Registrarse</a>
+            {% endif %}
+        </nav>
+    </header>
+
+    <main>
+        {% if messages %}
+            <div class="messages">
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+        
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    {% block scripts %}
+        <script src="{% static 'js/ui-modal.js' %}"></script>
+        <script src="{% static 'js/nav.js' %}"></script>
+    {% endblock %}
+    {% block extra_scripts %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block title %}Inicio - Centro de Psicología{% endblock %}
+{% block page_title %}Centro de Psicología{% endblock %}
+
+{% block content %}
+<div class="hero-section">
+    <div class="hero-content">
+        <h2>Bienvenido a nuestro centro de psicología</h2>
+        <p>Ofrecemos servicios profesionales de psicología con un equipo de especialistas altamente calificados.</p>
+        
+        {% if user.is_authenticated %}
+            <p>Hola, <strong>{{ user.get_full_name|default:user.username }}</strong>. ¿Qué deseas hacer hoy?</p>
+            <div class="hero-actions">
+                <a href="{% url 'reservar' %}" class="btn btn-primary">Reservar nueva cita</a>
+                <a href="{% url 'mis_reservas' %}" class="btn btn-secondary">Ver mis reservas</a>
+            </div>
+        {% else %}
+            <div class="hero-actions">
+                <a href="{% url 'login' %}" class="btn btn-primary">Iniciar sesión</a>
+                <a href="{% url 'register' %}" class="btn btn-secondary">Registrarse</a>
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+<section class="features">
+    <div class="feature-grid">
+        <div class="feature-card">
+            <h3>Profesionales Calificados</h3>
+            <p>Contamos con {{ professionals_count }} profesionales especializados en diferentes áreas de la psicología.</p>
+        </div>
+        <div class="feature-card">
+            <h3>Sistema de Reservas</h3>
+            <p>Reserva tus citas de manera fácil y rápida a través de nuestro sistema online.</p>
+        </div>
+        <div class="feature-card">
+            <h3>Atención Personalizada</h3>
+            <p>Cada sesión está diseñada para atender tus necesidades específicas.</p>
+        </div>
+    </div>
+</section>
+{% endblock %}

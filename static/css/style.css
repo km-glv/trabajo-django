@@ -1,0 +1,214 @@
+:root{
+  --bg: #f8fafc;
+  --primary: #00695c;
+  --accent: #26a69a;
+  --muted: #e0e0e0;
+  --card: #ffffff;
+}
+
+*{box-sizing:border-box}
+
+body {
+  font-family: "Segoe UI", Arial, sans-serif;
+  background-color: var(--bg);
+  color: #222;
+  margin: 0;
+  padding: 0;
+}
+
+header{padding:18px 20px;text-align:center;background:linear-gradient(90deg,var(--primary),#004d40);color:#fff}
+header h1{margin:0;font-weight:600}
+
+/* Barra de navegación superior */
+.topnav{margin-top:8px;display:inline-flex;gap:12px}
+.topnav .nav-link{color:#cfd8dc;padding:8px 12px;border-radius:6px;text-decoration:none;background:transparent}
+.topnav .nav-link:hover{color:#fff;background:rgba(255,255,255,0.06)}
+.topnav .nav-link.active{color:#fff;background:rgba(255,255,255,0.12)}
+
+.main-layout{display:flex;gap:16px;padding:20px;align-items:flex-start}
+
+.calendar-container{flex:1}
+
+#calendar{
+  display:grid;
+  /* First column fixed-ish, other columns flex to available space */
+  grid-template-columns: 120px repeat(5, minmax(0, 1fr)); /* Hora + Lunes a Viernes */
+  border: 1px solid #d0d7db;
+  background-color: var(--card);
+  width:100%;
+  max-width: none; /* allow parent to control width */
+  margin:0 auto;
+  overflow: auto;
+  grid-auto-rows: minmax(40px, auto); /* let rows size reasonably on small/mobile */
+}
+
+.day-header{background-color:var(--primary);color:white;padding:10px;font-weight:700;border:1px solid #d0d7db}
+
+.hour-cell{border:1px solid #eee;padding:8px 10px;cursor:pointer;transition:background-color .12s;font-size:14px;min-height:44px}
+.hour-cell:hover{background:#f1fffb}
+.hour-cell.selected{outline:3px solid rgba(0,105,92,0.12)}
+.reserved{background:var(--accent);color:#fff}
+.reserved-other{background:#d32f2f;color:#fff}
+.time-label{background:var(--muted);font-weight:600;border:1px solid #d0d7db;padding:10px}
+
+/* make headers and time labels a bit smaller on narrow screens */
+@media (max-width:600px){
+  .day-header{padding:8px;font-size:13px}
+  .time-label{padding:8px;font-size:13px}
+  #calendar{grid-auto-rows: minmax(36px, auto)}
+}
+
+.sidebar{width:320px;padding:12px;background:var(--card);border:1px solid #dfe6e9;height:fit-content}
+.sidebar h2{margin-top:0;color:var(--primary)}
+.reservations-list{max-height:60vh;overflow:auto}
+.reservation-item{border-bottom:1px solid #eee;padding:8px 4px;text-align:left}
+.reservation-item:last-child{border-bottom:none}
+.reservation-meta{font-size:13px;color:#555}
+
+.reservation-item.highlight{background:linear-gradient(90deg,rgba(0,105,92,0.06),transparent);border-left:4px solid #00695c;padding-left:8px}
+
+.reservation-item .btn{padding:6px 8px;font-size:13px;border-radius:4px}
+.reservation-item .btn-danger{padding:6px 8px}
+
+/* Snackbar undo */
+.snackbar{position:fixed;left:50%;transform:translateX(-50%);bottom:20px;background:#263238;color:#fff;padding:10px 14px;border-radius:8px;display:flex;align-items:center;gap:8px;z-index:200}
+.snackbar .btn{background:rgba(255,255,255,0.12);color:#fff;border-radius:6px;padding:6px 8px}
+
+.btn{display:inline-block;padding:8px 12px;border-radius:6px;border:none;cursor:pointer;text-decoration:none}
+.btn-primary{background:var(--primary);color:#fff}
+.btn-secondary{background:#f0f0f0;color:#333}
+.btn-danger{background:#d32f2f;color:#fff}
+
+/* Modal */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:80}
+.hidden{display:none}
+.modal{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);width:420px;background:var(--card);border:1px solid #d0d7db;padding:12px;border-radius:8px;z-index:90}
+.modal-header{display:flex;align-items:center;justify-content:space-between}
+.modal-close{background:transparent;border:none;font-size:22px;cursor:pointer}
+.modal-body{padding-top:8px}
+.form-row{margin-bottom:10px;text-align:left}
+.form-row label{display:block;margin-bottom:6px;font-size:14px}
+.form-row input,.form-row textarea{width:100%;padding:8px;border:1px solid #cfd8dc;border-radius:6px}
+.form-actions{display:flex;gap:8px;justify-content:flex-end}
+
+@media (max-width:1000px){
+  .main-layout{flex-direction:column;padding:12px}
+  .sidebar{width:100%}
+  #calendar{grid-template-columns:80px repeat(5,minmax(0,1fr));font-size:13px}
+}
+
+/* wrapper to control calendar sizing inside the reservation page */
+.calendar-wrapper{flex:1;min-width:260px;padding:8px}
+/* ensure calendar fills wrapper */
+.calendar-wrapper > #calendar{width:100%;height:100%}
+/* same visual container padding as mis_reservas layout */
+#calendar{padding:8px}
+
+/* Estilos para autenticación */
+.auth-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 60vh;
+  padding: 20px;
+}
+
+.auth-form {
+  background: var(--card);
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  width: 100%;
+  max-width: 400px;
+}
+
+.auth-form h2 {
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  color: var(--primary);
+}
+
+/* Hero section */
+.hero-section {
+  text-align: center;
+  padding: 3rem 2rem;
+  background: linear-gradient(135deg, var(--bg) 0%, #e8f5e8 100%);
+}
+
+.hero-content h2 {
+  color: var(--primary);
+  margin-bottom: 1rem;
+  font-size: 2.5rem;
+}
+
+.hero-content p {
+  font-size: 1.2rem;
+  margin-bottom: 2rem;
+  color: #555;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+/* Features section */
+.features {
+  padding: 3rem 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.feature-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+}
+
+.feature-card {
+  background: var(--card);
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  text-align: center;
+}
+
+.feature-card h3 {
+  color: var(--primary);
+  margin-bottom: 1rem;
+}
+
+/* Messages/Alerts */
+.messages {
+  margin: 1rem 0;
+}
+
+.alert {
+  padding: 12px 16px;
+  border-radius: 6px;
+  margin-bottom: 1rem;
+}
+
+.alert-success {
+  background-color: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+}
+
+.alert-error {
+  background-color: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+}
+
+.alert-warning {
+  background-color: #fff3cd;
+  color: #856404;
+  border: 1px solid #ffeaa7;
+}
+
+/* Field-level error label */
+.field-error{color:#b71c1c;background:#ffebee;padding:6px;border-radius:6px;margin-top:6px;font-size:13px}

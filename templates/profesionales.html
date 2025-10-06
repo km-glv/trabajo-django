@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Profesionales - Centro de Psicología{% endblock %}
+{% block page_title %}Profesionales{% endblock %}
+
+{% block content %}
+<div class="main-layout">
+    <div class="professionals-container">
+        <h2>Nuestros Profesionales</h2>
+        
+        {% if profesionales %}
+            <div class="professionals-grid">
+                {% for profesional in profesionales %}
+                    <div class="professional-card">
+                        <h3>{{ profesional.nombre }}</h3>
+                        <p><strong>Especialidad:</strong> {{ profesional.especialidad }}</p>
+                        <p><strong>Estado:</strong> {% if profesional.disponible %}Disponible{% else %}No disponible{% endif %}</p>
+                        {% if profesional.disponible %}
+                            <a href="{% url 'reservar' %}" class="btn btn-primary">Reservar cita</a>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p>No hay profesionales disponibles en este momento.</p>
+        {% endif %}
+        
+        <div class="actions">
+            <a href="{% url 'home' %}" class="btn btn-secondary">Volver al inicio</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Reservar Cita - Centro de Psicología{% endblock %}
+{% block page_title %}Reservar Cita{% endblock %}
+
+{% block content %}
+<div class="main-layout">
+    <div class="calendar-wrapper" style="flex:1;min-width:300px;">
+        <div class="calendar-header" style="display:flex;align-items:center;gap:12px;margin-bottom:8px">
+            <button id="prev-week" class="btn">◀</button>
+            <div id="calendar-month" style="font-weight:700"></div>
+            <button id="next-week" class="btn">▶</button>
+        </div>
+        <div id="calendar" style="border:1px solid #e6e6e6;padding:12px;border-radius:6px;background:#fff"></div>
+    </div>
+    <div class="reservations-container" style="flex:0 0 360px;min-width:320px">
+        <h2>Formulario de Reserva</h2>
+
+        <form method="post">
+            {% csrf_token %}
+            <div class="form-row">
+                <label for="profesional_id">Profesional</label>
+                <select id="profesional_id" name="profesional_id" required>
+                    <option value="">Selecciona un profesional</option>
+                    {% for prof in profesionales %}
+                        <option value="{{ prof.id }}">{{ prof.nombre }} - {{ prof.especialidad }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <!-- Fecha y hora seleccionadas desde el calendario (oculto) -->
+            <input type="hidden" id="fecha" name="fecha">
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">Confirmar reserva</button>
+                <a class="btn btn-secondary" href="{% url 'home' %}">Volver al inicio</a>
+            </div>
+
+            <input type="hidden" id="selected-day" name="selected_day">
+            <input type="hidden" id="selected-time" name="selected_time">
+            <div style="margin-top:12px">
+                <label>Horario seleccionado</label>
+                <div id="selected-slot" class="reservation-meta">Ninguno</div>
+            </div>
+        </form>
+
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+    <script>
+        window.djangoData = window.djangoData || {};
+        {% if reservations_json %}
+            try {
+                window.djangoData.reservations = JSON.parse(`{{ reservations_json|escapejs }}`);
+            } catch(e) { window.djangoData.reservations = {}; }
+        {% else %}
+            window.djangoData.reservations = {};
+        {% endif %}
+    </script>
+    <script src="{% static 'js/reservar-django.js' %}"></script>
+{% endblock %}
